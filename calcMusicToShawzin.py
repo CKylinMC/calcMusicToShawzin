@@ -14,11 +14,12 @@ class calcMusicToShawzin:
         '-':'i',
         '*':'k',
         '/':'z',
-        '=': 'a',
+        '=':'a',
     }
     cur = '5'
     __spaceMarks = list(string.ascii_uppercase + string.ascii_lowercase)
-    __spaceMarks += [str(i) for i in range(0,10)]
+    __spaceMarks += [str(i) for i in range(0, 10)]
+    __spaceMarks += ['+','/']
     space = 3
 
     def resetData(self):
@@ -43,16 +44,14 @@ class calcMusicToShawzin:
         return True
 
     def jump(self, ts=1):
-        tmpjp = ''
         countMarks = len(self.__spaceMarks)
         self.slot += ts
         if self.slot >= countMarks:
             self.rounds += 1
             if self.rounds >= countMarks:
-                tmpjp += "/"
                 self.rounds -= self.rounds % countMarks
             self.slot = self.slot % countMarks
-        return self.__spaceMarks[self.rounds] + self.__spaceMarks[self.slot] + tmpjp
+        return self.__spaceMarks[self.rounds] + self.__spaceMarks[self.slot]
         
     def convertFromFile(self, txtFilePath):
         scores = None
@@ -62,20 +61,19 @@ class calcMusicToShawzin:
         if scores == None:
             print("File has no content")
             return False
-        scores = scores.replace("\n\r", " ").replace("\r", " ").replace("\n", " ")
+        scores = scores.replace("\r\n", " ").replace("\r", " ").replace("\n", " ")
         scores = scores.replace("＋", "+")
         scores = scores.replace("－", "-").replace("—", "-")
         scores = scores.replace("x", "*").replace("×", "*")
         scores = scores.replace("÷", "/")
         return self.convert(scores)
         
-
     def getShawzinScores(self):
-        return self.songStr;
+        return self.songStr
 
     def __init__(self, space=3):
         self.space = space
-        self.resetData();
+        self.resetData()
 
 if __name__ == '__main__':
     import optparse
