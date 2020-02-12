@@ -13,8 +13,8 @@ class calcMusicToShawzin:
         '+':'h',
         '-':'i',
         '*':'k',
-        '/':'z',
-        '=':'a',
+        '/':'B',
+        '=':'C',
     }
     cur = '5'
     __spaceMarks = list(string.ascii_uppercase + string.ascii_lowercase)
