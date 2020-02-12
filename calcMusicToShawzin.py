@@ -30,17 +30,29 @@ class calcMusicToShawzin:
     def convert(self, txtCalcMusic):
         self.resetData()
         tmpjump = 1
+        nospace = False
         for w in txtCalcMusic:
             if w == ' ':
-                tmpjump += 1
+                if nospace:
+                    tmpjump += 1
+                else:
+                    tmpjump += self.space
+                continue
+            if w == '[':
+                nospace = True
+                continue
+            if w == ']':
+                nospace = False
                 continue
             if not w in self.__letters:
                 print("Unknow word: '{}'".format(w))
                 return False
             self.songStr += self.__letters[w]
-            self.songStr += self.jump(self.space * tmpjump + (tmpjump - 1))
-            if tmpjump != 1:
+            self.songStr += self.jump(tmpjump)
+            if nospace:
                 tmpjump = 1
+            else:
+                tmpjump = self.space
         return True
 
     def jump(self, ts=1):
@@ -88,7 +100,11 @@ if __name__ == '__main__':
     opts, args = Parser.parse_args()
     CMS = calcMusicToShawzin(opts.space)
     if opts.file == None:
-        stat = CMS.convert(input())
+        try:
+            stat = CMS.convert(input())
+        except KeyboardInterrupt:
+            print('Input cancelled')
+            stat = False
     else:
         stat = CMS.convertFromFile(opts.file)
     if stat:
